@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "864058558222",
+    "project_id": "hahucare-9fe67",
+    "storage_bucket": "hahucare-9fe67.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864058558222:android:d4830ccfd0111764e9f95f",
+        "android_client_info": {
+          "package_name": "com.hahucarepro.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864058558222-r2nrjd03hhvh1799e19p0c5dl4kf6q5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7oWErDEbb9fnoI8ftMIlV9U10tVMcOXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864058558222-r2nrjd03hhvh1799e19p0c5dl4kf6q5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
