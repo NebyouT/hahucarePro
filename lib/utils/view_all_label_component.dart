@@ -31,7 +31,7 @@ class ViewAllLabel extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: boldTextStyle(size: labelSize ?? Constants.labelTextSize, color: labelTextColor)),
+        Text(label, style: boldTextStyle(size: labelSize ?? Constants.labelTextSize, color: labelTextColor ?? primaryTextColor)),
         if (isShowAll)
           TextButton(
             style: ButtonStyle(
@@ -44,10 +44,19 @@ class ViewAllLabel extends StatelessWidget {
                     onTap?.call();
                   }
                 : null,
-            child: (list == null ? true : isViewAllVisible(list!)) ? Text(trailingText ?? locale.value.viewAll, style: boldTextStyle(color: trailingTextColor ?? appColorSecondary, size: 14)) : const SizedBox(),
+            child: (list == null ? true : isViewAllVisible(list!))
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(trailingText ?? locale.value.viewAll, style: boldTextStyle(color: trailingTextColor ?? appColorPrimary, size: 13)),
+                      4.width,
+                      Icon(Icons.arrow_forward_ios, size: 10, color: trailingTextColor ?? appColorPrimary),
+                    ],
+                  )
+                : const SizedBox(),
           )
         else
-          46.height,
+          const SizedBox(height: 46),
       ],
     );
   }

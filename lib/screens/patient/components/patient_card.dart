@@ -95,9 +95,13 @@ class PatientCardWid extends StatelessWidget {
                               color: iconColor,
                             ),
                             12.width,
-                            Text(
-                              patient.mobile,
-                              style: secondaryTextStyle(decoration: TextDecoration.underline, decorationColor: appColorPrimary, color: appColorPrimary),
+                            Flexible(
+                              child: Text(
+                                patient.mobile,
+                                style: secondaryTextStyle(decoration: TextDecoration.underline, decorationColor: appColorPrimary, color: appColorPrimary),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -116,11 +120,13 @@ class PatientCardWid extends StatelessWidget {
                               color: iconColor,
                             ),
                             12.width,
-                            Text(
-                              patient.email,
-                              style: secondaryTextStyle(decoration: TextDecoration.underline, decorationColor: appColorSecondary, color: appColorSecondary),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            Flexible(
+                              child: Text(
+                                patient.email,
+                                style: secondaryTextStyle(decoration: TextDecoration.underline, decorationColor: appColorSecondary, color: appColorSecondary),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),

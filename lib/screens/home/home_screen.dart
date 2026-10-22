@@ -14,7 +14,6 @@ import '../../components/app_scaffold.dart';
 import '../../components/cached_image_widget.dart';
 import '../../main.dart';
 import '../../utils/colors.dart';
-import '../../utils/common_base.dart';
 import '../../utils/constants.dart';
 import '../../utils/empty_error_state_widget.dart';
 import '../../utils/local_storage.dart';
@@ -33,6 +32,7 @@ import 'components/service_home_component.dart';
 import 'home_controller.dart';
 import 'components/medicine_usage_chart_comp.dart';
 import 'components/pharma_analytics_component.dart';
+import 'components/lab_analytics_component.dart';
 import 'components/today_prescriptions_home_component.dart';
 import '../dashboard/components/menu.dart';
 import 'package:kivicare_clinic_admin/screens/pharma/prescriptions/all_prescription_screen.dart';
@@ -53,8 +53,8 @@ class HomeScreen extends StatelessWidget {
       appBarChild: const GreetingsComponent(),
       body: RefreshIndicator(
         onRefresh: () async {
-          if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) {
-          await getAppConfigurations();
+          if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) {
+            await getAppConfigurations();
             homeScreenController.getRevenueChartDetails(showLoader: false);
           }
           if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) {
@@ -79,60 +79,84 @@ class HomeScreen extends StatelessWidget {
             loadingWidget: homeScreenController.isLoading.value ? const Offstage() : const LoaderWidget(),
             onSuccess: (dashboardData) {
               return SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 90),
+                padding: const EdgeInsets.only(bottom: 100),
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
                       () => Container(
-                        height: 52,
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                         decoration: BoxDecoration(
-                          color: isDarkMode.value ? context.cardColor : canvasColor.withValues(alpha: 0.9),
-                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          color: isDarkMode.value ? context.cardColor : Colors.white.withValues(alpha: 0.95),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isDarkMode.value ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFE8ECF0),
+                          ),
                         ),
                         child: Row(
                           children: [
                             CachedImageWidget(
                               url: selectedAppClinic.value.clinicImage,
-                              height: 32,
-                              width: 32,
+                              height: 36,
+                              width: 36,
                               circle: true,
                               fit: BoxFit.cover,
                             ),
-                            16.width,
-                            Text(selectedAppClinic.value.name, overflow: TextOverflow.ellipsis, style: boldTextStyle(color: white, size: 14)).expand(),
-                            TextButton(
-                              style: const ButtonStyle().copyWith(
-                                padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              onPressed: () {
-                                Get.to(
-                                  () => ChooseClinicScreen(),
-                                  arguments: ClinicCenterArgumentModel(
-                                    selectedClinc: selectedAppClinic.value,
+                            12.width,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    selectedAppClinic.value.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: boldTextStyle(size: 14, color: primaryTextColor),
                                   ),
-                                )?.then((value) {
-                                  if (value is ClinicData) {
-                                    selectedAppClinic(value);
-                                    loginUserData.value.selectedClinic = value;
-                                    setValueToLocal(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
-                                    homeScreenController.getDashboardDetail();
-                                  }
-                                });
-                              },
-                              child: Text(locale.value.change, style: boldTextStyle(size: 12, fontFamily: fontFamilyWeight700, color: appColorSecondary)).paddingSymmetric(horizontal: 8),
-                            ).visible(loginUserData.value.userRole.contains(EmployeeKeyConst.doctor))
+                                  Text(
+                                    'Current Clinic',
+                                    style: secondaryTextStyle(size: 11, color: secondaryTextColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor))
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  backgroundColor: lightPrimaryColor,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed: () {
+                                  Get.to(
+                                    () => ChooseClinicScreen(),
+                                    arguments: ClinicCenterArgumentModel(
+                                      selectedClinc: selectedAppClinic.value,
+                                    ),
+                                  )?.then((value) {
+                                    if (value is ClinicData) {
+                                      selectedAppClinic(value);
+                                      loginUserData.value.selectedClinic = value;
+                                      setValueToLocal(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
+                                      homeScreenController.getDashboardDetail();
+                                    }
+                                  });
+                                },
+                                child: Text(
+                                  locale.value.change,
+                                  style: boldTextStyle(size: 12, color: appColorPrimary),
+                                ),
+                              ),
                           ],
                         ).onTap(() {
                           if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)) {
                             Get.to(() => ClinicDetailScreen(), arguments: selectedAppClinic.value);
                           }
                         }),
-                      ).paddingTop(16).visible(loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)),
+                      ).visible(loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)),
                     ),
                     HomeComponent(
                       title: locale.value.analytics,
@@ -142,7 +166,9 @@ class HomeScreen extends StatelessWidget {
                               ? PharmaAnalyticComponent(homeScreenCont: homeScreenController)
                               : loginUserData.value.userRole.contains(EmployeeKeyConst.doctor)
                                   ? DoctorAnalyticComponent(homeScreenCont: homeScreenController)
-                                  : ReceptionistAnalyticComponent(homeScreenCont: homeScreenController),
+                                  : loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)
+                                      ? LabAnalyticComponent(homeScreenCont: homeScreenController)
+                                      : ReceptionistAnalyticComponent(homeScreenCont: homeScreenController),
                     ),
                     if (homeScreenController.dashboardData.value.data.todayPrescription.isNotEmpty)
                       HomeComponent(
@@ -153,8 +179,7 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: TodaysPrescriptionHomeComponent(),
                       ),
-                    HomeBedStatusWidget().visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)),
-                    // End Bed Status Section
+                    HomeBedStatusWidget().visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)),
                     if (homeScreenController.dashboardData.value.data.clinics.isNotEmpty)
                       HomeComponent(
                         title: locale.value.clinics,
@@ -164,42 +189,60 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: ClinicsHomeComponent(),
                       ),
-                    Container(
-                      width: Get.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(16),
-                      decoration: boxDecorationDefault(),
-                      child: Row(
-                        children: [
-                          const CachedImageWidget(
-                            url: Assets.imagesEmptyBox,
-                            height: 120,
-                            width: 120,
-                            circle: true,
-                            fit: BoxFit.cover,
-                          ),
-                          16.width,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(locale.value.viewAndManageTheListOfServicesYouProvide, style: boldTextStyle(size: 14)),
-                              16.height,
-                              AppButton(
-                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                                margin: EdgeInsets.zero,
-                                elevation: 0,
-                                shapeBorder: RoundedRectangleBorder(borderRadius: radius(defaultAppButtonRadius / 2)),
-                                color: appColorSecondary,
-                                onTap: () {
-                                  Get.to(() => AllServicesScreen());
-                                },
-                                child: Text(locale.value.manageServices, style: boldTextStyle(size: 12, color: whiteTextColor, weight: FontWeight.w400)),
-                              )
-                            ],
-                          ).expand(),
-                        ],
-                      ),
-                    ).paddingTop(24).visible(homeScreenController.showAddServiceComp.value),
+                    Obx(
+                      () => homeScreenController.showAddServiceComp.value
+                          ? Container(
+                              width: Get.width,
+                              margin: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: isDarkMode.value ? const Color(0xFF1A2634) : Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: isDarkMode.value ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFE8ECF0),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      color: lightPrimaryColor,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Image.asset(
+                                      Assets.imagesEmptyBox,
+                                      height: 48,
+                                      width: 48,
+                                    ).center(),
+                                  ),
+                                  16.width,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(locale.value.viewAndManageTheListOfServicesYouProvide, style: boldTextStyle(size: 14)),
+                                        12.height,
+                                        AppButton(
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                          margin: EdgeInsets.zero,
+                                          elevation: 0,
+                                          shapeBorder: RoundedRectangleBorder(borderRadius: radius(10)),
+                                          color: appColorPrimary,
+                                          onTap: () {
+                                            Get.to(() => AllServicesScreen());
+                                          },
+                                          child: Text(locale.value.manageServices, style: boldTextStyle(size: 12, color: Colors.white)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const Offstage(),
+                    ),
                     Obx(
                       () => HomeComponent(
                         title: locale.value.recentAppointment,
@@ -212,7 +255,6 @@ class HomeScreen extends StatelessWidget {
                         },
                       ).visible(homeScreenController.dashboardData.value.data.upcomingAppointment.isNotEmpty),
                     ),
-
                     Obx(
                       () => HomeComponent(
                         title: locale.value.yourService,
@@ -223,13 +265,25 @@ class HomeScreen extends StatelessWidget {
                         child: ServicesHomeComponent(),
                       ).visible(homeScreenController.dashboardData.value.data.doctorServices.isNotEmpty && loginUserData.value.userRole.contains(EmployeeKeyConst.doctor)),
                     ),
-                    Obx(() => homeScreenController.revenueData.value.data.yearChartData.isNotEmpty && loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)
-                        ? ChartComponent()
-                        : const Offstage()),
+                    Obx(
+                      () => homeScreenController.revenueData.value.data.yearChartData.isNotEmpty && (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma))
+                          ? Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                              child: ChartComponent(),
+                            )
+                          : const Offstage(),
+                    ),
                     TopSupplierComponent(
                       supplierList: homeScreenController.dashboardData.value.data.topSuppliers,
+                    ).paddingOnly(top: 16),
+                    Obx(
+                      () => homeScreenController.medicineUsageChartData.value.data.isNotEmpty && loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)
+                          ? Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                              child: MedicineUsageChart(homeCont: homeScreenController),
+                            )
+                          : const Offstage(),
                     ),
-                    Obx(() => homeScreenController.medicineUsageChartData.value.data.isNotEmpty && loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) ? MedicineUsageChart(homeCont: homeScreenController) : Offstage())
                   ],
                 ),
               );

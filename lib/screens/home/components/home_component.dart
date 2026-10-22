@@ -24,15 +24,18 @@ class HomeComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ViewAllLabel(
-          label: title,
-          trailingText: trailingText ?? locale.value.viewAll,
-          isShowAll: showSeeAll,
-          onTap: onSeeAllTap ??
-              () {
-                Get.to(() => BedStatusScreen());
-              },
-        ).paddingOnly(left: 16, right: 8),
+        title.isNotEmpty
+            ? ViewAllLabel(
+                label: title,
+                trailingText: trailingText ?? locale.value.viewAll,
+                isShowAll: showSeeAll,
+                onTap: onSeeAllTap ??
+                    () {
+                      Get.to(() => BedStatusScreen());
+                    },
+              ).paddingOnly(left: 16, right: 8)
+            : const Offstage(),
+        8.height,
         child.paddingSymmetric(horizontal: 16),
       ],
     ).paddingTop(16);

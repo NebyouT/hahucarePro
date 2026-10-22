@@ -6,13 +6,12 @@ import 'package:kivicare_clinic_admin/utils/local_storage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
 import '../../utils/app_common.dart';
-import '../../utils/colors.dart';
 import '../../utils/common_base.dart';
 import '../../utils/constants.dart';
 import '../appointment/appointments_controller.dart';
 import '../home/home_controller.dart';
 import '../payout/payout_history_controller.dart';
-import 'components/btm_nav_item.dart';
+import 'components/modern_bottom_nav.dart';
 import 'dashboard_controller.dart';
 import 'components/menu.dart';
 
@@ -32,51 +31,21 @@ class DashboardScreen extends StatelessWidget {
             Obx(
               () => Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: isDarkMode.value ? fullDarkCanvasColor.withValues(alpha: 0.9) : canvasColor.withValues(alpha: 0.9),
-                    borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: isDarkMode.value ? appBodyColor.withValues(alpha: 0.3) : canvasColor.withValues(alpha: 0.3),
-                        offset: Offset(0, isDarkMode.value ? 5 : 20),
-                        blurRadius: isDarkMode.value ? 5 : 20,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ...List.generate(
-                        bottomNavItems.length,
-                        (index) {
-                          BottomBarItem navBar = bottomNavItems[index];
-                          return Obx(
-                            () => BtmNavItem(
-                              navBar: navBar,
-                              isFirst: index == 0,
-                              isLast: index == bottomNavItems.length - 1,
-                              press: () {
-                                // Minimal, safe guard added below to prevent out-of-range errors.
-                                if (!isLoggedIn.value && (index == 1 || index == 2)) {
-                                  doIfLoggedIn(() {
-                                    handleChangeTabIndex(index);
-                                  });
-                                } else {
-                                  handleChangeTabIndex(index);
-                                }
-                              },
-                              selectedNav: dashboardController.selectedBottonNav.value,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ).fit(),
+                child: ModernBottomNav(
+                  items: bottomNavItems,
+                  selectedIndex: dashboardController.currentIndex.value,
+                  onItemSelected: (index) {
+                    if (!isLoggedIn.value && (index == 1 || index == 2)) {
+                      doIfLoggedIn(() {
+                        handleChangeTabIndex(index);
+                      });
+                    } else {
+                      handleChangeTabIndex(index);
+                    }
+                  },
                 ),
-              ).paddingSymmetric(vertical: 15),
-            )
+              ),
+            ),
           ],
         ),
         extendBody: true,
@@ -87,9 +56,6 @@ class DashboardScreen extends StatelessWidget {
   void handleChangeTabIndex(int index) {
     hideKeyBoardWithoutContext();
 
-    // ==== SAFEGUARD: ensure index is valid before accessing lists ====
-    // This is a minimal, non-invasive change to avoid crashes when
-    // bottomNavItems and screen lists are rebuilt with different lengths.
     try {
       final int screensLength = dashboardController.screen.length;
       final int navLength = bottomNavItems.length;
@@ -99,11 +65,9 @@ class DashboardScreen extends StatelessWidget {
         return;
       }
     } catch (e) {
-      // If something unexpected happens, bail out safely.
       log('handleChangeTabIndex: validation error -> $e');
       return;
     }
-    // ==== End safeguard ====
 
     dashboardController.selectedBottonNav(bottomNavItems[index]);
     dashboardController.currentIndex(index);

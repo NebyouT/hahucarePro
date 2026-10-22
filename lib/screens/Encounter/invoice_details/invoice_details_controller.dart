@@ -10,13 +10,18 @@ import '../../appointment/appointment_detail_controller.dart';
 import '../../appointment/appointments_controller.dart';
 import '../../bed_management/bed_status_controller.dart';
 import '../../home/home_controller.dart';
+import '../../pharma/medicine/model/medicine_resp_model.dart';
+import '../add_encounter/model/prescription_model.dart';
 import '../../service/model/service_list_model.dart';
+import '../model/encounter_lab_order_model.dart';
 import '../generate_invoice/model/billing_item_model.dart';
 import '../generate_invoice/model/save_billing_resp.dart';
 import '../model/encounters_list_model.dart';
 import 'model/billing_details_resp.dart';
 
 enum PaymentStatus { paid, unpaid }
+
+enum BillingItemType { service, labTest, medicine }
 
 class InvoiceDetailsController extends GetxController {
   RxBool isLoading = false.obs;
@@ -65,6 +70,25 @@ class InvoiceDetailsController extends GetxController {
   RxList<BillingItem> billingItemList = RxList();
 
   RxBool isEditMode = false.obs;
+
+  // Billing Item Type Selection
+  Rx<BillingItemType> selectedBillingItemType = BillingItemType.service.obs;
+
+  // Encounter Lab Orders
+  RxList<EncounterLabOrder> encounterLabOrders = RxList();
+  RxBool isLoadingLabOrders = false.obs;
+
+  // Encounter Prescriptions (Medicines)
+  RxList<Prescription> encounterPrescriptions = RxList();
+  RxBool isLoadingPrescriptions = false.obs;  // Selected lab order item for billing
+  Rx<EncounterLabOrderItem> selectedLabOrderItem = EncounterLabOrderItem().obs;
+  TextEditingController labItemNameCont = TextEditingController();
+  TextEditingController labItemPriceCont = TextEditingController();
+
+  // Selected prescription item for billing
+  Rx<Prescription> selectedPrescriptionItem = Prescription(medicine: Medicine.fromJson({})).obs;
+  TextEditingController prescriptionItemNameCont = TextEditingController();
+  TextEditingController prescriptionItemPriceCont = TextEditingController();
 
   @override
   void onReady() {
@@ -261,5 +285,99 @@ class InvoiceDetailsController extends GetxController {
       log("getServiceList Err : $e");
     }).whenComplete(() => isLoading(false));
     return serviceList;
+  }
+
+  /// Fetch encounter lab orders for the current encounter
+  Future<void> fetchEncounterLabOrders() async {
+    if (encounter.value.id.isNegative) return;
+    isLoadingLabOrders(true);
+    try {
+      final orders = await CoreServiceApis.getEncounterLabOrders(encounter.value.id);
+      encounterLabOrders(orders);
+    } catch (e) {
+      log('fetchEncounterLabOrders Err: $e');
+    } finally {
+      isLoadingLabOrders(false);
+    }
+  }
+
+  /// Fetch encounter prescriptions for the current encounter
+  Future<void> fetchEncounterPrescriptions() async {
+    if (encounter.value.id.isNegative) return;
+    isLoadingPrescriptions(true);
+    try {
+      final dashDetail = await CoreServiceApis.encounterDashboardDetail(encounter.value.id);
+      if (dashDetail.value.prescriptions.isNotEmpty) {
+        encounterPrescriptions(dashDetail.value.prescriptions);
+      } else {
+        encounterPrescriptions.clear();
+      }
+    } catch (e) {
+      log('fetchEncounterPrescriptions Err: $e');
+    } finally {
+      isLoadingPrescriptions(false);
+    }
+  }
+
+  /// Select a lab order item for billing
+  void selectLabOrderItem(EncounterLabOrderItem item) {
+    selectedLabOrderItem(item);
+    labItemNameCont.text = item.serviceName;
+    labItemPriceCont.text = item.price;
+    serviceAmount(double.tryParse(item.price) ?? 0);
+    servicesCont.text = item.serviceName;
+    priceCont.text = item.price;
+    quantityCont.text = '1';
+  }
+
+  /// Select a prescription medicine item for billing
+  void selectPrescriptionItem(Prescription item) {
+    selectedPrescriptionItem(item);
+    prescriptionItemNameCont.text = item.medicine.name;
+    prescriptionItemPriceCont.text = item.medicine.sellingPrice.toString();
+    serviceAmount(item.medicine.sellingPrice);
+    servicesCont.text = item.medicine.name;
+    priceCont.text = item.medicine.sellingPrice.toString();
+    quantityCont.text = item.quantity > 0 ? item.quantity.toString() : '1';
+  }
+
+  /// Save billing item for lab test or medicine (non-service items)
+  Future<void> saveNonServiceBillingItem({BillingItem? billingItem, required int index}) async {
+    final quantity = quantityCont.text.toInt();
+    final amount = serviceAmount.value.toDouble().toPrecision(2);
+    final total = (quantity * amount).toPrecision(2);
+
+    billingItem = BillingItem(
+      billingId: invoiceData.value.id,
+      itemId: selectedBillingItemType.value == BillingItemType.labTest
+          ? selectedLabOrderItem.value.id
+          : selectedPrescriptionItem.value.id,
+      itemName: servicesCont.text.trim(),
+      quantity: quantity,
+      serviceAmount: amount,
+      totalAmount: total,
+      bedPrice: 0,
+    );
+
+    isLoading(true);
+
+    await CoreServiceApis.saveBillingItems(request: billingItem.toRequestJson()).then((value) {
+      toast(value.message.trim().isNotEmpty ? value.message : "Billing Record Saved");
+      getInvoiceDetail(showLoader: true);
+      refreshAppoitmentRelatedPages();
+    }).catchError((e) {
+      toast("$e");
+    }).whenComplete(() => isLoading(false));
+  }
+
+  /// Clear selections when switching billing item type
+  void clearBillingTypeSelection() {
+    selectedLabOrderItem(EncounterLabOrderItem());
+    selectedPrescriptionItem(Prescription(medicine: Medicine.fromJson({})));
+    labItemNameCont.clear();
+    labItemPriceCont.clear();
+    prescriptionItemNameCont.clear();
+    prescriptionItemPriceCont.clear();
+    getClearBillingItem();
   }
 }

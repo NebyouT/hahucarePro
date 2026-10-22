@@ -1795,7 +1795,7 @@ class LanguageEn extends BaseLanguage {
   String get readAll => 'Read All';
 
   @override
-  String get otherDetails => 'Other Details';
+  String get otherDetails => 'clinical details';
 
   @override
   String get selectedFileShouldBeLessThan5MB => 'Please select an image smaller than 5 MB';
@@ -2636,4 +2636,19 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'Bed Saved Successfully';
+
+  @override
+  String get labTests => 'Lab Tests';
+
+  @override
+  String get prescribedMedicines => 'Prescribed Medicines';
+
+  @override
+  String get noLabOrdersFound => 'No lab orders found for this encounter';
+
+  @override
+  String get noPrescriptionsFound => 'No prescriptions found for this encounter';
+
+  @override
+  String get selectLabTest => 'Select Lab Test';
 }

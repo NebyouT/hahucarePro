@@ -10,6 +10,9 @@ import 'package:kivicare_clinic_admin/screens/Encounter/invoice_details/invoice_
 import 'package:kivicare_clinic_admin/screens/Encounter/medical_Report/medical_reports_screen.dart';
 import 'package:kivicare_clinic_admin/utils/colors.dart';
 import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:kivicare_clinic_admin/screens/Encounter/encounter_lab/encounter_lab_screen.dart';
+import 'package:kivicare_clinic_admin/screens/Encounter/encounter_certificate/encounter_certificate_screen.dart';
+import 'package:kivicare_clinic_admin/screens/Encounter/encounter_referral/encounter_referral_screen.dart';
 import '../../../../main.dart';
 import '../../../../utils/app_common.dart';
 import '../../../bed_management/all_beds_screen.dart';
@@ -109,6 +112,45 @@ class MoreInfoComponent extends StatelessWidget {
           },
           titleTextStyle: boldTextStyle(size: 14),
           leading: commonLeadingWid(imgPath: Assets.iconsIcInvoice, color: appColorSecondary),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+        ).paddingTop(16),
+        SettingItemWidget(
+          title: "Lab Orders",
+          decoration: boxDecorationDefault(color: context.cardColor),
+          subTitle: "View and create lab orders",
+          splashColor: transparentColor,
+          onTap: () {
+            Get.to(() => EncounterLabScreen(), arguments: encounterData);
+          },
+          titleTextStyle: boldTextStyle(size: 14),
+          leading: commonLeadingWid(imgPath: Assets.iconsIcFile, color: appColorSecondary),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+        ).paddingTop(16),
+        SettingItemWidget(
+          title: "Medical Certificate",
+          decoration: boxDecorationDefault(color: context.cardColor),
+          subTitle: "Create and download medical certificates",
+          splashColor: transparentColor,
+          onTap: () {
+            Get.to(() => EncounterCertificateScreen(), arguments: encounterData);
+          },
+          titleTextStyle: boldTextStyle(size: 14),
+          leading: commonLeadingWid(imgPath: Assets.iconsIcFile, color: appColorSecondary),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+        ).paddingTop(16),
+        SettingItemWidget(
+          title: "Referral",
+          decoration: boxDecorationDefault(color: context.cardColor),
+          subTitle: "Refer patient to another doctor",
+          splashColor: transparentColor,
+          onTap: () {
+            Get.to(() => EncounterReferralScreen(), arguments: encounterData);
+          },
+          titleTextStyle: boldTextStyle(size: 14),
+          leading: commonLeadingWid(imgPath: Assets.iconsIcFile, color: appColorSecondary),
           trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: darkGray),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
         ).paddingTop(16),

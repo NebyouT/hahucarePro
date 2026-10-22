@@ -20,7 +20,7 @@ class AppTheme {
     ),
     useMaterial3: true,
     hoverColor: Colors.white54,
-    dividerColor: const Color(0xFF626E8A),
+    dividerColor: const Color(0xFFE0E4E8),
     fontFamily: GoogleFonts.interTight().fontFamily,
     drawerTheme: const DrawerThemeData(backgroundColor: appScreenBackground),
     appBarTheme: AppBarTheme(
@@ -33,7 +33,7 @@ class AppTheme {
       ),
       systemOverlayStyle: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
     ),
-    tabBarTheme: TabBarThemeData(indicator: UnderlineTabIndicator(borderSide: BorderSide(color: Color(0xFFB6D5EF), width: 3))),
+    tabBarTheme: TabBarThemeData(indicator: UnderlineTabIndicator(borderSide: BorderSide(color: Color(0xFFB3D9FF), width: 3))),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: appColorPrimary),
     cardTheme: CardThemeData(color: Colors.white),
     cardColor: appSectionBackground,

@@ -111,7 +111,7 @@ class EncounterData {
       observations: json['observations'] is List ? List<ObservationsData>.from(json['observations'].map((x) => ObservationsData.fromJson(x))) : [],
       notes: json['notes'] is List ? List<NotesData>.from(json['notes'].map((x) => NotesData.fromJson(x))) : [],
       prescriptions: json['prescriptions'] is List ? List<Prescriptions>.from(json['prescriptions'].map((x) => Prescriptions.fromJson(x))) : [],
-      otherDetails: json['other_details'] is String ? json['other_details'] : "",
+      otherDetails: json['clinical_details'] is String ? json['clinical_details'] : "",
       medicalReport: json['medical_report'] is List ? List<MedicalReport>.from(json['medical_report'].map((x) => MedicalReport.fromJson(x))) : [],
       appointmentId: json['appointment_id'] is int ? json['appointment_id'] : -1,
       status: json['status'] is int
@@ -151,7 +151,7 @@ class EncounterData {
       'observations': observations.map((e) => e.toJson()).toList(),
       'notes': notes.map((e) => e.toJson()).toList(),
       'prescriptions': prescriptions.map((e) => e.toJson()).toList(),
-      'other_details': otherDetails,
+      'clinical_details': otherDetails,
       'medical_report': medicalReport.map((e) => e.toJson()).toList(),
       'appointment_id': appointmentId,
       'status': status,

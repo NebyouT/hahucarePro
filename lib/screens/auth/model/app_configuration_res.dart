@@ -43,6 +43,7 @@ class ConfigurationResponse {
   int cancellationChargeHours;
   bool isCancellationChargeEnabled;
   int isPharma;
+  int isLab;
 
   List<TaxPercentage> taxData;
 
@@ -102,6 +103,7 @@ class ConfigurationResponse {
     this.isCancellationChargeEnabled = false,
     this.isDummyCredential = 0,
     this.isPharma = 0,
+    this.isLab = 1,
   });
 
   factory ConfigurationResponse.fromJson(Map<String, dynamic> json) {
@@ -149,6 +151,7 @@ class ConfigurationResponse {
       isCancellationChargeEnabled: json['is_cancellation_charge'] is bool ? json['is_cancellation_charge'] : json['is_cancellation_charge'] == 1,
       isDummyCredential: json['is_dummy_credentials'] is int ? json['is_dummy_credentials'] : 0,
       isPharma: json['is_pharma'] is int ? json['is_pharma'] : 0,
+      isLab: json['is_lab'] is int ? json['is_lab'] : 0,
     );
   }
 
@@ -197,6 +200,7 @@ class ConfigurationResponse {
       'is_cancellation_charge': isCancellationChargeEnabled,
       'is_dummy_credentials': isDummyCredential,
       'is_pharma': isPharma,
+      'is_lab': isLab,
     };
   }
 }

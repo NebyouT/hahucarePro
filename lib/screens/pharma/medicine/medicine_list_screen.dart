@@ -128,7 +128,7 @@ class MedicinesListScreen extends StatelessWidget {
                           return AnimatedListView(
                             shrinkWrap: true,
                             itemCount: list.length,
-                            padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 80),
+                            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 80),
                             physics: const AlwaysScrollableScrollPhysics(),
                             listAnimationType: ListAnimationType.None,
                             emptyWidget: NoDataWidget(

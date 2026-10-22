@@ -253,68 +253,55 @@ class MedicineCardWidget extends StatelessWidget {
     String label2 = "",
     String value2 = "",
   }) {
-    return Row(
-      children: [
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (icon1 != "")
-                CachedImageWidget(
-                  url: icon1,
+    Widget buildColumn(String icon, String label, String value) {
+      return Expanded(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (icon.isNotEmpty)
+              SizedBox(
+                height: 18,
+                width: 18,
+                child: CachedImageWidget(
+                  url: icon,
                   height: 18,
                   width: 18,
                   color: dividerColor,
-                ).paddingTop(2),
-              6.width,
-              Column(
+                ),
+              ).paddingTop(2),
+            if (icon.isNotEmpty) 6.width,
+            Flexible(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    label1,
+                    label,
                     style: primaryTextStyle(color: dividerColor, size: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    value1,
+                    value,
                     style: boldTextStyle(size: 12, weight: FontWeight.w600, color: isDarkMode.value ? null : darkGrayTextColor),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Marquee(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (icon2.isNotEmpty)
-                  CachedImageWidget(
-                    url: icon2,
-                    height: 18,
-                    width: 18,
-                    color: dividerColor,
-                  ).paddingTop(2),
-                6.width,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label2,
-                      style: primaryTextStyle(color: dividerColor, size: 12),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      value2,
-                      style: boldTextStyle(size: 12, weight: FontWeight.w600, color: isDarkMode.value ? null : darkGrayTextColor),
-                    ),
-                  ],
-                ),
-              ],
             ),
-          ),
+          ],
         ),
+      );
+    }
+
+    return Row(
+      children: [
+        buildColumn(icon1, label1, value1),
+        if (icon2.isNotEmpty || label2.isNotEmpty) ...[
+          8.width,
+          buildColumn(icon2, label2, value2),
+        ],
       ],
     );
   }

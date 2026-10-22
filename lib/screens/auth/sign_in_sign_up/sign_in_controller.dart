@@ -24,6 +24,7 @@ class SignInController extends GetxController {
 
   RxBool isRememberMe = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isPasswordVisible = false.obs;
   RxString userName = "".obs;
 
   TextEditingController emailCont = TextEditingController();
@@ -36,6 +37,10 @@ class SignInController extends GetxController {
 
   void toggleSwitch() {
     isRememberMe.value = !isRememberMe.value;
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
   }
 
   @override
@@ -59,6 +64,9 @@ class SignInController extends GetxController {
       loginRoles.removeWhere((item) => item.userType == EmployeeKeyConst.pharma);
     } else if (loginRoles.indexWhere((item) => item.userType == EmployeeKeyConst.pharma) == -1) {
       loginRoles.add(pharmaLoginRole);
+    }
+    if (loginRoles.indexWhere((item) => item.userType == EmployeeKeyConst.labTechnician) == -1) {
+      loginRoles.add(labLoginRole);
     }
     if (Get.arguments is bool) {
       isNavigateToDashboard(Get.arguments == true);
@@ -168,7 +176,8 @@ class SignInController extends GetxController {
     if (loginResponse.userData.userRole.contains(EmployeeKeyConst.vendor) ||
         loginResponse.userData.userRole.contains(EmployeeKeyConst.doctor) ||
         loginResponse.userData.userRole.contains(EmployeeKeyConst.receptionist) ||
-        loginResponse.userData.userRole.contains(EmployeeKeyConst.pharma)) {
+        loginResponse.userData.userRole.contains(EmployeeKeyConst.pharma) ||
+        loginResponse.userData.userRole.contains(EmployeeKeyConst.labTechnician)) {
       loginUserData(loginResponse.userData);
       loginUserData.value.isSocialLogin = isSocialLogin;
       loginUserData.value.userType = selectedLoginRole.value.userType;

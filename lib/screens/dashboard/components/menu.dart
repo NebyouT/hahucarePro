@@ -14,6 +14,9 @@ enum BottomItem {
   settings,
   profile,
   order,
+  labOrders,
+  labResults,
+  labServices,
 }
 
 class BottomBarItem {
@@ -39,6 +42,9 @@ RxList<BottomBarItem> bottomNavItems = [
   if(loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) BottomBarItem(title: (locale.value.order).obs, icon: Assets.iconsIcShoppingCart, activeIcon: Assets.iconsIcShoppingCart, type: BottomItem
       .order.name),
   if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) BottomBarItem(title: (locale.value.payouts).obs, icon: Assets.iconsIcTotalPayout, activeIcon: Assets.iconsIcTotalPayout, type: BottomItem.payout.name),
+  if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) BottomBarItem(title: (locale.value.order).obs, icon: Assets.iconsIcShoppingCart, activeIcon: Assets.iconsIcShoppingCart, type: BottomItem.labOrders.name),
+  if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) BottomBarItem(title: ("Results".obs), icon: Assets.iconsIcNotepad, activeIcon: Assets.iconsIcNotepad, type: BottomItem.labResults.name),
+  if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) BottomBarItem(title: (locale.value.services).obs, icon: Assets.iconsIcServices, activeIcon: Assets.iconsIcServices, type: BottomItem.labServices.name),
   isLoggedIn.value
       ? BottomBarItem(title: (locale.value.profile).obs, icon: Assets.navigationIcUserOutlined, activeIcon: Assets.navigationIcUserFilled, type: BottomItem.profile.name)
       : BottomBarItem(title: (locale.value.settings).obs, icon: Assets.iconsIcSettingOutlined, activeIcon: Assets.iconsIcSetting, type: BottomItem.settings.name),

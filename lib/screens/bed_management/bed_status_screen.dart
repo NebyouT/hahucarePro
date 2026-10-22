@@ -263,6 +263,7 @@ class BedStatusItemWidget extends StatelessWidget {
     }
 
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Container(
           width: 115,
@@ -275,6 +276,7 @@ class BedStatusItemWidget extends StatelessWidget {
               width: 1,
             ),
           ),
+          clipBehavior: Clip.hardEdge,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

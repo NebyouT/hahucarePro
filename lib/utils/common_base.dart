@@ -127,9 +127,18 @@ Future<void> commonLaunchUrl(String address, {LaunchMode launchMode = LaunchMode
   });
 }
 
-void viewFiles(String url) {
+Future<void> viewFiles(String url) async {
   if (url.isNotEmpty) {
-    commonLaunchUrl(url, launchMode: LaunchMode.externalApplication);
+    final uri = Uri.tryParse(url);
+    if (uri != null && await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication).catchError((e) {
+        commonLaunchUrl(url, launchMode: LaunchMode.inAppWebView);
+      });
+    } else if (uri != null) {
+      commonLaunchUrl(url, launchMode: LaunchMode.inAppWebView);
+    } else {
+      toast('${locale.value.invalidUrl}: $url');
+    }
   }
 }
 

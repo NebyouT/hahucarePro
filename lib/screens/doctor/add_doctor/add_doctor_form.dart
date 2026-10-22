@@ -638,7 +638,7 @@ class AddDoctorForm extends StatelessWidget {
                     ).expand(),
                   ],
                 ),
-                Text("Other Details", style: boldTextStyle(size: 16)).paddingTop(16),
+                Text("clinical details", style: boldTextStyle(size: 16)).paddingTop(16),
                 AppTextField(
                   textStyle: primaryTextStyle(size: 12),
                   controller: addDoctorCont.aboutSelfCont,

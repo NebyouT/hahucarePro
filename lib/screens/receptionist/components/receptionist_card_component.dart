@@ -52,10 +52,13 @@ class ReceptionistCardComponent extends StatelessWidget {
                     color: iconColor,
                   ),
                   8.width,
-                  Text(
-                    receptionist.clinicName,
-                    overflow: TextOverflow.ellipsis,
-                    style: secondaryTextStyle(size: 12),
+                  Expanded(
+                    child: Text(
+                      receptionist.clinicName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: secondaryTextStyle(size: 12),
+                    ),
                   ),
                 ],
               ),

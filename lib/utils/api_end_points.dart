@@ -21,6 +21,7 @@ class APIEndPoints {
   static const String receptionistDashboardList = 'receptionist-dashboard-list';
   static const String doctorDashboardList = 'doctor-dashboard-list';
   static const String pharmaDashboardList = 'pharma-dashboard-list';
+  static const String labTechnicianDashboardList = 'lab-technician-dashboard-list';
 
   static const String getSystemService = 'get-system-service';
   static const String getServices = 'get-services';
@@ -187,4 +188,32 @@ class APIEndPoints {
   static const String bedMasterList = 'bed-master-list';
   static const String bedStatus = 'bed-status';
   static const String bedsAvailable = 'bed-status/available';
+
+  //Lab Technician
+  static const String labGetOrders = 'lab-technician/get-orders';
+  static const String labGetClinics = 'lab-technician/get-clinics';
+  static const String labGetLabsByClinic = 'lab-technician/get-labs-by-clinic';
+  static const String labGetCategoriesByLab = 'lab-technician/get-categories-by-lab';
+  static const String labGetServicesByLab = 'lab-technician/get-services-by-lab';
+  static const String labGetServicesByCategory = 'lab-technician/get-services-by-category';
+  static const String labGetDoctorsByClinic = 'lab-technician/get-doctors-by-clinic';
+  static const String labGetPatients = 'lab-technician/get-patients';
+  static const String labCreateOrder = 'lab-technician/create-order';
+
+  //Lab Results
+  static const String labWorklist = 'lab-technician/worklist';
+  static const String labUploadResult = 'lab-technician/upload-result';
+
+  //Lab Services CRUD
+  static const String labServices = 'lab-technician/services';
+  static const String labCategories = 'lab-technician/categories';
+
+  // Encounter Lab Orders (doctor creates from encounter)
+  static const String encounterLabOrders = 'encounter-lab-orders';
+
+  // Medical Certificates
+  static const String medicalCertificates = 'medical-certificates';
+
+  // Referrals (doctor/encounter facing)
+  static const String encounterReferrals = 'encounter-referrals';
 }

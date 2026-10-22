@@ -62,22 +62,23 @@ class ProfileScreen extends StatelessWidget {
                       final EditUserProfileController editUserProfileController = EditUserProfileController(isProfilePhoto: true);
                       editUserProfileController.showBottomSheet(context);
                     },
-                  ).onTap(() {
-                    if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) && loginUserData.value.userRole.contains((EmployeeKeyConst.vendor))) {
-                      final doctorData = Doctor(
-                        id: loginUserData.value.id,
-                        doctorId: loginUserData.value.id,
-                        firstName: loginUserData.value.firstName,
-                        lastName: loginUserData.value.lastName,
-                        email: loginUserData.value.email,
-                        profileImage: loginUserData.value.profileImage,
-                        address: loginUserData.value.address,
-                      );
-                      Get.to(() => AddDoctorForm(isFromEditProfile: true), arguments: doctorData);
-                    } else {
-                      Get.to(() => EditUserProfileScreen(), duration: const Duration(milliseconds: 800));
-                    }
-                  }),
+                    onPicTap: () {
+                      if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) && loginUserData.value.userRole.contains((EmployeeKeyConst.vendor))) {
+                        final doctorData = Doctor(
+                          id: loginUserData.value.id,
+                          doctorId: loginUserData.value.id,
+                          firstName: loginUserData.value.firstName,
+                          lastName: loginUserData.value.lastName,
+                          email: loginUserData.value.email,
+                          profileImage: loginUserData.value.profileImage,
+                          address: loginUserData.value.address,
+                        );
+                        Get.to(() => AddDoctorForm(isFromEditProfile: true), arguments: doctorData);
+                      } else {
+                        Get.to(() => EditUserProfileScreen(), duration: const Duration(milliseconds: 800));
+                      }
+                    },
+                  ),
                 ),
                 SettingItemWidget(
                   decoration: boxDecorationDefault(color: context.cardColor),
@@ -215,7 +216,7 @@ class ProfileScreen extends StatelessWidget {
                   leading: commonLeadingWid(imgPath: Assets.iconsIcBed, color: appColorPrimary).circularLightPrimaryBg(),
                   trailing: trailing,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)),
+                ).paddingTop(16).visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)),
                 SettingItemWidget(
                   decoration: boxDecorationDefault(color: context.cardColor),
                   title: locale.value.requests,
@@ -254,7 +255,7 @@ class ProfileScreen extends StatelessWidget {
                   leading: commonLeadingWid(imgPath: Assets.iconsIcEncounter, color: appColorPrimary).circularLightPrimaryBg(),
                   trailing: trailing,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)),
+                ).paddingTop(16).visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)),
                 SettingItemWidget(
                   title: locale.value.settings,
                   decoration: boxDecorationDefault(color: context.cardColor),

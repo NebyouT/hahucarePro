@@ -18,27 +18,30 @@ class PayoutCardWid extends StatelessWidget {
       decoration: boxDecorationDefault(color: context.cardColor),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(payout.doctorName, style: boldTextStyle(size: 16)),
-                  8.width,
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                      color: appColorPrimary.withValues(alpha: .1),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(payout.doctorName, style: boldTextStyle(size: 16), overflow: TextOverflow.ellipsis, maxLines: 1),
                     ),
-                    child: Text(payout.employeeType.capitalizeFirstLetter(), style: boldTextStyle(size: 12, color: appColorPrimary)).paddingSymmetric(vertical: 4, horizontal: 12),
-                  ).visible(payout.employeeType.isNotEmpty),
-                ],
-              ),
-              8.height,
-              Text(payout.paymentDate.dateInDMMMMyyyyFormat, style: secondaryTextStyle(size: 12)),
-            ],
+                    8.width,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        color: appColorPrimary.withValues(alpha: .1),
+                      ),
+                      child: Text(payout.employeeType.capitalizeFirstLetter(), style: boldTextStyle(size: 12, color: appColorPrimary)).paddingSymmetric(vertical: 4, horizontal: 12),
+                    ).visible(payout.employeeType.isNotEmpty),
+                  ],
+                ),
+                8.height,
+                Text(payout.paymentDate.dateInDMMMMyyyyFormat, style: secondaryTextStyle(size: 12)),
+              ],
+            ),
           ),
-          const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

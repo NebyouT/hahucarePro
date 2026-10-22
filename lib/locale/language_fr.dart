@@ -2636,4 +2636,19 @@ class LanguageFr extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'Lit sauvé avec succès';
+
+  @override
+  String get labTests => 'Analyses de laboratoire';
+
+  @override
+  String get prescribedMedicines => 'Médicaments prescrits';
+
+  @override
+  String get noLabOrdersFound => 'Aucune commande de laboratoire trouvée pour cette consultation';
+
+  @override
+  String get noPrescriptionsFound => 'Aucune ordonnance trouvée pour cette consultation';
+
+  @override
+  String get selectLabTest => 'Sélectionner une analyse';
 }

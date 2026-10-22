@@ -2635,4 +2635,19 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'تم حفظ السرير بنجاح';
+
+  @override
+  String get labTests => 'فحوصات المختبر';
+
+  @override
+  String get prescribedMedicines => 'الأدوية الموصوفة';
+
+  @override
+  String get noLabOrdersFound => 'لم يتم العثور على طلبات مختبر لهذه الجلسة';
+
+  @override
+  String get noPrescriptionsFound => 'لم يتم العثور على وصفات طبية لهذه الجلسة';
+
+  @override
+  String get selectLabTest => 'اختر فحص المختبر';
 }

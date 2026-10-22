@@ -61,7 +61,7 @@ class DoctorCard extends StatelessWidget {
                       width: 18,
                       color: white,
                     ),
-                  ),
+                  ).visible(!loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)),
                   IconButton(
                     padding: const EdgeInsets.all(8),
                     constraints: const BoxConstraints(),

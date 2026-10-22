@@ -17,6 +17,8 @@ class HomeServiceApis {
       return DashboardRes.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.pharmaDashboardList}?top_supplier=$topSupplierLimit$clinic", method: HttpMethodType.GET)));
     } else if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor)) {
       return DashboardRes.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.doctorDashboardList}?clinic_id=${selectedAppClinic.value.id}")));
+    } else if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) {
+      return DashboardRes.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.labTechnicianDashboardList}$clinic")));
     } else {
       return DashboardRes.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.receptionistDashboardList)));
     }

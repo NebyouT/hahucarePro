@@ -74,6 +74,12 @@ class DashboardData {
   int unReadCount;
   List<BedMasterModel> latestUpdatedBeds;
 
+  //Lab Technician analytics
+  int labOrderCount;
+  int labResultCount;
+  int labServiceCount;
+  int labTestCount;
+
   DashboardData({
     this.vendorTotalClinic = 0,
     this.vendorTotalService = 0,
@@ -112,6 +118,12 @@ class DashboardData {
     //Unread Notificaions
     this.unReadCount = 0,
     this.latestUpdatedBeds = const <BedMasterModel>[],
+
+    //Lab Technician analytics
+    this.labOrderCount = 0,
+    this.labResultCount = 0,
+    this.labServiceCount = 0,
+    this.labTestCount = 0,
   });
 
   factory DashboardData.fromJson(Map<String, dynamic> json) {
@@ -153,6 +165,12 @@ class DashboardData {
       //Unread Notificaions
       unReadCount: json['notification_count'] is int ? json['notification_count'] : 0,
       latestUpdatedBeds: json['latest_updated_beds'] is List ? List<BedMasterModel>.from(json['latest_updated_beds'].map((x) => BedMasterModel.fromJson(x))) : [],
+
+      //Lab Technician analytics
+      labOrderCount: json['lab_order_count'] is int ? json['lab_order_count'] : 0,
+      labResultCount: json['lab_result_count'] is int ? json['lab_result_count'] : 0,
+      labServiceCount: json['lab_service_count'] is int ? json['lab_service_count'] : 0,
+      labTestCount: json['lab_test_count'] is int ? json['lab_test_count'] : 0,
     );
   }
 
@@ -196,6 +214,12 @@ class DashboardData {
       //Unread Notificaions
       'notification_count': unReadCount,
       'latest_updated_beds': latestUpdatedBeds.map((e) => e.toJson()).toList(),
+
+      //Lab Technician analytics
+      'lab_order_count': labOrderCount,
+      'lab_result_count': labResultCount,
+      'lab_service_count': labServiceCount,
+      'lab_test_count': labTestCount,
     };
   }
 }

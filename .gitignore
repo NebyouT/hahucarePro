@@ -123,3 +123,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# --- added: never commit signing keys or service credentials ---
+android/key.properties
+**/key.properties
+android/app/google-services.json
+**/google-services.json
+ios/Runner/GoogleService-Info.plist
+**/GoogleService-Info.plist
+android/.gradle/

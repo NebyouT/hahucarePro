@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
 import '../../../components/cached_image_widget.dart';
 import '../../../generated/assets.dart';
 import '../../../main.dart';
@@ -17,50 +16,84 @@ class GreetingsComponent extends StatelessWidget {
     return SizedBox(
       width: Get.width,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(22),
+              child: CachedImageWidget(
+                url: loginUserData.value.profileImage,
+                height: 44,
+                width: 44,
+                fit: BoxFit.cover,
+                firstName: loginUserData.value.firstName,
+                lastName: loginUserData.value.lastName,
+              ),
+            ),
+          ),
+          12.width,
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('👋 ${locale.value.welcomeBack}', style: appButtonTextStyleWhite),
-              4.height,
               Obx(
                 () => Text(
                   '${locale.value.hey}, ${loginUserData.value.userName.isNotEmpty ? loginUserData.value.userName.capitalizeEachWord().validate() : locale.value.guest.validate()}',
-                  style: primaryTextStyle(color: white, size: 20),
+                  style: boldTextStyle(color: Colors.white, size: 17),
                 ),
+              ),
+              2.height,
+              Text(
+                '${locale.value.welcomeBack} 👋',
+                style: secondaryTextStyle(color: Colors.white.withValues(alpha: 0.8), size: 12),
               ),
             ],
           ).expand(),
-          16.width,
-          GestureDetector(
-            onTap: () {
-              Get.to(() => NotificationScreen());
-            },
-            behavior: HitTestBehavior.translucent,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const CachedImageWidget(
-                  url: Assets.navigationIcNotifyOutlined,
-                  color: Colors.white,
-                  height: 24,
-                ),
-                Positioned(
-                  top: -8 + -(3 * unreadNotificationCount.value.toString().length).toDouble(),
-                  right: -4 + -(3 * unreadNotificationCount.value.toString().length).toDouble(),
-                  child: Obx(
-                    () => Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: boxDecorationDefault(color: appColorSecondary, shape: BoxShape.circle),
-                      child: Text(
-                        unreadNotificationCount.value.toString(),
-                        style: secondaryTextStyle(color: white, size: 8),
-                      ),
-                    ).visible(unreadNotificationCount.value > 0),
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => NotificationScreen());
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      Assets.navigationIcNotifyOutlined,
+                      color: Colors.white,
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
-                ),
-              ],
+                  Obx(
+                    () => Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(color: appColorSecondary, shape: BoxShape.circle),
+                        child: Text(
+                          unreadNotificationCount.value > 99 ? '99+' : unreadNotificationCount.value.toString(),
+                          style: secondaryTextStyle(color: Colors.white, size: 8),
+                        ).visible(unreadNotificationCount.value > 0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

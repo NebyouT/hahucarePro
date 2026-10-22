@@ -46,7 +46,7 @@ class HomeController extends GetxController {
     chartValue.value = revenueList[0];
     medicineChartValue.value = medicineUsageChartList[0];
     getDashboardDetail();
-    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) {
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) {
       getRevenueChartDetails();
     }
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) {

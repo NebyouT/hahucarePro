@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/screens/pharma/medicine/medicine_list_screen.dart';
 import 'package:kivicare_clinic_admin/screens/pharma/orders/order_screen.dart';
+import 'package:kivicare_clinic_admin/screens/lab/lab_orders_screen.dart';
+import 'package:kivicare_clinic_admin/screens/lab/lab_result_screen.dart';
+import 'package:kivicare_clinic_admin/screens/lab/lab_service_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:kivicare_clinic_admin/screens/payout/payout_history.dart';
 import '../../generated/assets.dart';
@@ -34,11 +37,14 @@ class DashboardController extends GetxController {
 
   RxList<StatelessWidget> screen = [
     HomeScreen(),
-    if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) AppointmentsScreen(),
+    if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) AppointmentsScreen(),
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains((EmployeeKeyConst.vendor)) && appConfigs.value.isPharma.getBoolInt()) AllPrescriptionsScreen(hasLeadingWidget: false),
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains((EmployeeKeyConst.vendor)) && appConfigs.value.isPharma.getBoolInt()) MedicinesListScreen(hasLeadingWidget: false),
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isPharma.getBoolInt()) OrderScreen(),
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) PayoutHistory(isFromBottomBar: true),
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabOrdersScreen(),
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabResultScreen(),
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabServiceScreen(),
     isLoggedIn.value ? ProfileScreen() : SettingScreen(),
   ].obs;
 
@@ -85,7 +91,7 @@ class DashboardController extends GetxController {
     log('reloadBottomTabs ISLOGGEDIN.VALUE: ${isLoggedIn.value}');
     bottomNavItems([
       BottomBarItem(title: (locale.value.home).obs, icon: Assets.navigationIcHomeOutlined, activeIcon: Assets.navigationIcHomeFilled, type: BottomItem.home.name),
-      if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma))
+      if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician))
         BottomBarItem(title: (locale.value.appointments).obs, icon: Assets.navigationIcCalenderOutlined, activeIcon: Assets.navigationIcCalenderFilled, type: BottomItem.appointment.name),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains((EmployeeKeyConst.vendor)) && appConfigs.value.isPharma.getBoolInt())
         BottomBarItem(title: (locale.value.prescription).obs, icon: Assets.navigationIcPrescriptionOutlined, activeIcon: Assets.navigationIcPrescriptionFilled, type: BottomItem.prescriptions.name),
@@ -94,6 +100,12 @@ class DashboardController extends GetxController {
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)  && appConfigs.value.isPharma.getBoolInt())
         BottomBarItem(title: (locale.value.order).obs, icon: Assets.iconsIcCart, activeIcon: Assets.iconsIcCart, type: BottomItem.order.name),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) BottomBarItem(title: (locale.value.payouts).obs, icon: Assets.iconsIcTotalPayout, activeIcon: Assets.iconsIcTotalPayout, type: BottomItem.payout.name),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt())
+        BottomBarItem(title: (locale.value.order).obs, icon: Assets.iconsIcShoppingCart, activeIcon: Assets.iconsIcShoppingCart, type: BottomItem.labOrders.name),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt())
+        BottomBarItem(title: ("Results".obs), icon: Assets.iconsIcNotepad, activeIcon: Assets.iconsIcNotepad, type: BottomItem.labResults.name),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt())
+        BottomBarItem(title: (locale.value.services).obs, icon: Assets.iconsIcServices, activeIcon: Assets.iconsIcServices, type: BottomItem.labServices.name),
       isLoggedIn.value
           ? BottomBarItem(title: (locale.value.profile).obs, icon: Assets.navigationIcUserOutlined, activeIcon: Assets.navigationIcUserFilled, type: BottomItem.profile.name)
           : BottomBarItem(title: (locale.value.settings).obs, icon: Assets.iconsIcSettingOutlined, activeIcon: Assets.iconsIcSetting, type: BottomItem.settings.name),
@@ -101,11 +113,14 @@ class DashboardController extends GetxController {
     bottomNavItems.refresh();
     screen(<StatelessWidget>[
       HomeScreen(),
-      if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma)) AppointmentsScreen(),
+      if (!loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) && !loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician)) AppointmentsScreen(),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains((EmployeeKeyConst.vendor)) && appConfigs.value.isPharma.getBoolInt()) AllPrescriptionsScreen(hasLeadingWidget: false),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains((EmployeeKeyConst.vendor)) && appConfigs.value.isPharma.getBoolInt()) MedicinesListScreen(hasLeadingWidget: false),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.pharma) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isPharma.getBoolInt()) OrderScreen(),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) PayoutHistory(isFromBottomBar: true),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabOrdersScreen(),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabResultScreen(),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.labTechnician) || loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) && appConfigs.value.isLab.getBoolInt()) const LabServiceScreen(),
       isLoggedIn.value ? ProfileScreen() : SettingScreen(),
     ]);
 

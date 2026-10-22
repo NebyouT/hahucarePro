@@ -66,9 +66,10 @@ void main() async {
 
   await initialize(aLocaleLanguageList: languageList(), defaultLanguage: selectedLanguageCode.value);
 
-  final BaseLanguage temp = await const AppLocalizations().load(Locale(selectedLanguageCode.value));
+  final String langCode = selectedLanguageCode.value.isNotEmpty ? selectedLanguageCode.value : DEFAULT_LANGUAGE;
+  final BaseLanguage temp = await const AppLocalizations().load(Locale(langCode));
   locale = temp.obs;
-  locale.value = await const AppLocalizations().load(Locale(selectedLanguageCode.value));
+  locale.value = await const AppLocalizations().load(Locale(langCode));
 
   try {
     final getThemeFromLocal = getValueFromLocal(SettingsLocalConst.THEME_MODE);
@@ -109,9 +110,9 @@ class MyApp extends StatelessWidget {
               child: child!,
             );
           },
-          localeResolutionCallback: (locale, supportedLocales) => Locale(selectedLanguageCode.value),
+          localeResolutionCallback: (locale, supportedLocales) => Locale(selectedLanguageCode.value.isNotEmpty ? selectedLanguageCode.value : DEFAULT_LANGUAGE),
           fallbackLocale: const Locale(DEFAULT_LANGUAGE),
-          locale: Locale(selectedLanguageCode.value),
+          locale: Locale(selectedLanguageCode.value.isNotEmpty ? selectedLanguageCode.value : DEFAULT_LANGUAGE),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light,

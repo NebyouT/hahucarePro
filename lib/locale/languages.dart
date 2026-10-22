@@ -1762,4 +1762,14 @@ abstract class BaseLanguage {
   String get bedEditedSuccessfully;
 
   String get bedSavedSuccessfully;
+
+  String get labTests;
+
+  String get prescribedMedicines;
+
+  String get noLabOrdersFound;
+
+  String get noPrescriptionsFound;
+
+  String get selectLabTest;
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/components/cached_image_widget.dart';
-import '../../../components/app_logo_widget.dart';
-import '../../../components/app_scaffold.dart';
 import '../../../configs.dart';
 import '../../../generated/assets.dart';
 import '../../../main.dart';
@@ -23,253 +21,347 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffoldNew(
-      isLoading: signInController.isLoading,
-      hasLeadingWidget: false,
-      clipBehaviorSplitRegion: Clip.none,
-      body: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          AnimatedScrollView(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                locale.value.chooseYourRole,
-                style: boldTextStyle(size: 22),
+    return Scaffold(
+      body: Container(
+        width: Get.width,
+        height: Get.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment(0.0, 0.15),
+            colors: [appColorPrimary, Color(0xFF3399FF)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: -80,
+              right: -80,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
               ),
-              8.height,
-              Text(
-                '${locale.value.welcomeBackToThe} $APP_NAME',
-                style: secondaryTextStyle(size: 14),
+            ),
+            Positioned(
+              bottom: -60,
+              left: -60,
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
               ),
-              SizedBox(height: Get.height * 0.05),
-              Form(
-                key: signInController.signInformKey,
+            ),
+            Positioned(
+              top: Get.height * 0.12,
+              right: -40,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.04),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AppTextField(
-                      title: locale.value.email,
-                      textStyle: primaryTextStyle(size: 12),
-                      controller: signInController.emailCont,
-                      focus: signInController.emailFocus,
-                      nextFocus: signInController.passwordFocus,
-                      textFieldType: TextFieldType.EMAIL_ENHANCED,
-                      decoration: inputDecoration(
-                        isShowLabel: false,
-                        context,
-                        fillColor: context.cardColor,
-                        filled: true,
-                        hintText: locale.value.email,
+                    SizedBox(height: Get.height * 0.08),
+                    Container(
+                      width: 90,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                      suffix: commonLeadingWid(imgPath: Assets.iconsIcMail, color: secondaryTextColor, size: 12).paddingAll(16),
-                    ),
-                    16.height,
-                    Text(locale.value.password, style: primaryTextStyle()),
-                    8.height,
-                    AppTextField(
-                      textStyle: primaryTextStyle(size: 12),
-                      controller: signInController.passwordCont,
-                      focus: signInController.passwordFocus,
-                      // Optional
-                      textFieldType: TextFieldType.PASSWORD,
-                      obscureText: true,
-                      decoration: inputDecoration(
-                        isShowLabel: false,
-                        context,
-                        fillColor: context.cardColor,
-                        filled: true,
-                        hintText: locale.value.password,
-                      ),
-                      suffixPasswordVisibleWidget: commonLeadingWid(imgPath: Assets.iconsIcEye, color: appColorPrimary, size: 12).paddingAll(14),
-                      suffixPasswordInvisibleWidget: commonLeadingWid(imgPath: Assets.iconsIcEyeSlash, color: appColorPrimary, size: 12).paddingAll(14),
-                    ),
-                    8.height,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => CheckboxListTile(
-                            checkColor: whiteColor,
-                            value: signInController.isRememberMe.value,
-                            activeColor: appColorPrimary,
-                            visualDensity: VisualDensity.compact,
-                            dense: true,
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsets.zero,
-                            onChanged: (val) async {
-                              signInController.toggleSwitch();
-                            },
-                            checkboxShape: RoundedRectangleBorder(borderRadius: radius(0)),
-                            side: const BorderSide(color: secondaryTextColor, width: 1.5),
-                            title: Text(
-                              locale.value.rememberMe,
-                              style: secondaryTextStyle(color: darkGrayGeneral),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(45),
+                        child: Image.asset(
+                          Assets.assetsAppLogo,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Center(
+                            child: Text(
+                              APP_NAME[0],
+                              style: boldTextStyle(size: 32, color: appColorPrimary),
                             ),
                           ),
-                        ).expand(),
-                        TextButton(
-                          onPressed: () {
-                            Get.to(() => ForgetPassword());
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Get.height * 0.04),
+                    Text(
+                      locale.value.welcomeBackToThe,
+                      style: secondaryTextStyle(size: 14, color: Colors.white70),
+                    ),
+                    4.height,
+                    Text(
+                      APP_NAME,
+                      style: boldTextStyle(size: 26, color: Colors.white, letterSpacing: 1),
+                    ),
+                    SizedBox(height: Get.height * 0.04),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
+                      decoration: BoxDecoration(
+                        color: context.cardColor,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 30,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Form(
+                        key: signInController.signInformKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(24, 28, 24, 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(locale.value.email, style: boldTextStyle(size: 13, color: primaryTextColor)),
+                                  8.height,
+                                  AppTextField(
+                                    textStyle: primaryTextStyle(size: 14),
+                                    controller: signInController.emailCont,
+                                    focus: signInController.emailFocus,
+                                    nextFocus: signInController.passwordFocus,
+                                    textFieldType: TextFieldType.EMAIL_ENHANCED,
+                                    decoration: inputDecoration(
+                                      isShowLabel: false,
+                                      context,
+                                      fillColor: appScreenBackground,
+                                      filled: true,
+                                      hintText: locale.value.email,
+                                    ).copyWith(
+                                      prefixIcon: Container(
+                                        margin: const EdgeInsets.all(12),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: lightPrimaryColor,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: commonLeadingWid(imgPath: Assets.iconsIcMail, color: appColorPrimary, size: 14),
+                                      ),
+                                      hintStyle: secondaryTextStyle(size: 13),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: const BorderSide(color: appColorPrimary, width: 1.5),
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                                    ),
+                                  ),
+                                  20.height,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(locale.value.password, style: boldTextStyle(size: 13, color: primaryTextColor)),
+                                      InkWell(
+                                        onTap: () {
+                                          Get.to(() => ForgetPassword());
+                                        },
+                                        child: Text(
+                                          locale.value.forgotPassword,
+                                          style: primaryTextStyle(size: 12, color: appColorPrimary, fontStyle: FontStyle.italic),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  8.height,
+                                  Obx(
+                                    () => AppTextField(
+                                      textStyle: primaryTextStyle(size: 14),
+                                      controller: signInController.passwordCont,
+                                      focus: signInController.passwordFocus,
+                                      textFieldType: TextFieldType.PASSWORD,
+                                      obscureText: !signInController.isPasswordVisible.value,
+                                      decoration: inputDecoration(
+                                        isShowLabel: false,
+                                        context,
+                                        fillColor: appScreenBackground,
+                                        filled: true,
+                                        hintText: locale.value.password,
+                                      ).copyWith(
+                                        prefixIcon: Container(
+                                          margin: const EdgeInsets.all(12),
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: lightPrimaryColor,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: commonLeadingWid(imgPath: Assets.iconsIcLock, color: appColorPrimary, size: 14),
+                                        ),
+                                        hintStyle: secondaryTextStyle(size: 13),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: const BorderSide(color: appColorPrimary, width: 1.5),
+                                        ),
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                                        suffixIcon: IconButton(
+                                          onPressed: () => signInController.togglePasswordVisibility(),
+                                          icon: Icon(
+                                            signInController.isPasswordVisible.value ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                                            color: secondaryTextColor,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  12.height,
+                                  Obx(
+                                    () => Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Checkbox(
+                                            value: signInController.isRememberMe.value,
+                                            activeColor: appColorPrimary,
+                                            checkColor: whiteColor,
+                                            shape: RoundedRectangleBorder(borderRadius: radius(6)),
+                                            side: const BorderSide(color: borderColor, width: 1.5),
+                                            onChanged: (val) {
+                                              signInController.toggleSwitch();
+                                            },
+                                          ),
+                                        ),
+                                        10.width,
+                                        Text(
+                                          locale.value.rememberMe,
+                                          style: secondaryTextStyle(size: 13, color: secondaryTextColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            12.height,
+                            Container(
+                              width: Get.width,
+                              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                              child: Column(
+                                children: [
+                                  AppButton(
+                                    width: Get.width,
+                                    height: 54,
+                                    text: locale.value.signIn,
+                                    color: appColorPrimary,
+                                    shapeBorder: RoundedRectangleBorder(borderRadius: radius(16)),
+                                    textStyle: boldTextStyle(size: 15, color: Colors.white),
+                                    onTap: () {
+                                      if (signInController.signInformKey.currentState!.validate()) {
+                                        signInController.signInformKey.currentState!.save();
+                                        signInController.saveForm();
+                                      }
+                                    },
+                                  ),
+                                  if (signInController.isLoading.value) 8.height,
+                                  if (signInController.isLoading.value)
+                                    const LinearProgressIndicator(
+                                      color: appColorPrimary,
+                                      backgroundColor: Color(0xFFE8F0FE),
+                                      minHeight: 3,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Get.height * 0.035),
+                    Text(locale.value.chooseYourRole, style: secondaryTextStyle(size: 12, color: Colors.white60)),
+                    14.height,
+                    Wrap(
+                      runSpacing: 12,
+                      spacing: 12,
+                      alignment: WrapAlignment.center,
+                      children: loginRoles
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                signInController.selectedLoginRole(e);
+                              },
+                              child: Obx(
+                                () => RoleComponent(
+                                  loginUserRole: e,
+                                  isSelected: signInController.selectedLoginRole.value.id == e.id,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    24.height,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(locale.value.notAMember, style: secondaryTextStyle(size: 13, color: Colors.white70)),
+                        4.width,
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => SignUpScreen());
+                            signInController.signInformKey.currentState?.reset();
                           },
                           child: Text(
-                            locale.value.forgotPassword,
-                            style: primaryTextStyle(
-                              size: 12,
-                              color: appColorPrimary,
-                              decoration: TextDecoration.underline,
-                              fontStyle: FontStyle.italic,
-                              decorationColor: appColorPrimary,
-                            ),
+                            locale.value.signUp,
+                            style: boldTextStyle(size: 13, color: Colors.white),
                           ),
                         ),
                       ],
                     ),
+                    SizedBox(height: Get.height * 0.04),
                   ],
                 ),
-              ).paddingSymmetric(horizontal: 16),
-              SizedBox(height: Get.height * 0.03),
-              if (appConfigs.value.isDummyCredential == 1)
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                  onPressed: () {
-                    chooseEmployeeType(
-                      context,
-                      isLoading: signInController.isLoading,
-                      onChange: (p0) {
-                        if (appConfigs.value.isDummyCredential == 1) {
-                          signInController.emailCont.text = p0.email;
-                          signInController.passwordCont.text = p0.password;
-
-                          hideKeyboard(context);
-                        } else {
-                          signInController.emailCont.text = '';
-                          signInController.passwordCont.text = '';
-                          signInController.isRememberMe.value = false;
-                        }
-                        signInController.selectedLoginRole(p0);
-                      },
-                    );
-                  },
-                  child: Text(
-                    locale.value.demoAccounts,
-                    style: primaryTextStyle(
-                      size: 14,
-                      color: appColorPrimary,
-                      decoration: TextDecoration.underline,
-                      decorationColor: appColorPrimary,
-                    ),
-                  ).paddingSymmetric(horizontal: 8),
-              ).paddingBottom(16).visible(isIqonicProduct && appConfigs.value.isDummyCredential == 1),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      AppButton(
-                        height: 54,
-                        text: locale.value.signIn,
-                        color: appColorSecondary,
-                        shapeBorder: RoundedRectangleBorder(borderRadius: radius(defaultAppButtonRadius / 2)),
-                        textStyle: appButtonTextStyleWhite,
-                        onTap: () {
-                          if (signInController.signInformKey.currentState!.validate()) {
-                            signInController.signInformKey.currentState!.save();
-                            signInController.saveForm();
-                          }
-                        },
-                      ).expand(),
-                    ],
-                  ),
-                  8.height,
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(locale.value.notAMember, style: secondaryTextStyle()),
-                      4.width,
-                      InkWell(
-                        onTap: () {
-                          Get.to(() => SignUpScreen());
-                          signInController.signInformKey.currentState?.reset();
-                        },
-                        child: Text(
-                          locale.value.signUp,
-                          style: boldTextStyle(
-                            size: 12,
-                            color: appColorSecondary,
-                            decorationColor: appColorSecondary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  16.height,
-                ],
-              ).paddingSymmetric(horizontal: 16),
-              SizedBox(height: Get.height * 0.01),
-              Wrap(
-                runSpacing: 12,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 16,
-                alignment: WrapAlignment.center,
-                children: loginRoles
-                    .map(
-                      (e) => GestureDetector(
-                        onTap: () {
-                          signInController.selectedLoginRole(e);
-                        },
-                        child: Obx(
-                          () => RoleComponent(
-                            loginUserRole: e,
-                            isSelected: signInController.selectedLoginRole.value.id == e.id,
-                          ),
-                        ),
+              ),
+            ),
+            Obx(
+              () => signInController.isLoading.value
+                  ? Container(
+                      color: Colors.black26,
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
                       ),
                     )
-                    .toList(),
-              ),
-              SizedBox(height: Get.height * 0.03),
-            ],
-          ).paddingOnly(top: Get.height * 0.11),
-          Positioned(
-            width: Get.width,
-            top: -Constants.appLogoSize / 2,
-            child: const AppLogoWidget(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class RoleComponent extends StatelessWidget {
-  final LoginRoleData loginUserRole;
-  final bool isSelected;
-
-  const RoleComponent({super.key, required this.loginUserRole, this.isSelected = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      decoration: boxDecorationDefault(color: isSelected ? appColorPrimary : context.cardColor, shape: BoxShape.rectangle, borderRadius: radius(100)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CachedImageWidget(
-            url: loginUserRole.icon,
-            height: 15,
-            fit: BoxFit.fitHeight,
-            color: isSelected ? white : textSecondaryColorGlobal,
-          ),
-          8.width,
-          Text(
-            loginUserRole.roleName,
-            style: boldTextStyle(size: 14, color: isSelected ? white : textSecondaryColorGlobal),
-          ),
-        ],
+                  : const Offstage(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -302,3 +394,47 @@ void chooseEmployeeType(BuildContext context, {RxBool? isLoading, required Funct
     ),
   );
 }
+
+class RoleComponent extends StatelessWidget {
+  final LoginRoleData loginUserRole;
+  final bool isSelected;
+
+  const RoleComponent({super.key, required this.loginUserRole, this.isSelected = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CachedImageWidget(
+            url: loginUserRole.icon,
+            height: 16,
+            fit: BoxFit.fitHeight,
+            color: isSelected ? appColorPrimary : Colors.white70,
+          ),
+          8.width,
+          Text(
+            loginUserRole.roleName,
+            style: boldTextStyle(
+              size: 13,
+              color: isSelected ? appColorPrimary : Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+

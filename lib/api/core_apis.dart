@@ -20,6 +20,7 @@ import '../screens/Encounter/invoice_details/model/billing_details_resp.dart';
 import '../screens/Encounter/model/enc_dashboard_detail_res.dart';
 import '../screens/Encounter/model/encounter_invoice_resp.dart';
 import '../screens/Encounter/model/encounters_list_model.dart';
+import '../screens/Encounter/model/encounter_lab_order_model.dart';
 import '../screens/Encounter/model/get_soap_res.dart';
 import '../screens/Encounter/model/medical_reports_res_model.dart';
 import '../screens/Encounter/model/problems_observations_model.dart';
@@ -986,6 +987,133 @@ class CoreServiceApis {
       log(e.toString());
       return null;
     }
+  }
+
+  // ─── Encounter Lab Orders ────────────────────────────────────────────
+
+  static Future<RxList<EncounterLabOrder>> getEncounterLabOrders(int encounterId) async {
+    final res = EncounterLabOrderListRes.fromJson(
+      await handleResponse(await buildHttpResponse("${APIEndPoints.encounterLabOrders}/$encounterId")),
+    );
+    return res.data.obs;
+  }
+
+  static Future<Rx<EncounterLabCreateResp>> createEncounterLabOrder({
+    required int encounterId,
+    required int clinicId,
+    required int labId,
+    required int patientId,
+    required int doctorId,
+    String? notes,
+    required List<int> services,
+  }) async {
+    final res = EncounterLabCreateResp.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.encounterLabOrders,
+          method: HttpMethodType.POST,
+          request: {
+            'encounter_id': encounterId,
+            'clinic_id': clinicId,
+            'lab_id': labId,
+            'patient_id': patientId,
+            'doctor_id': doctorId,
+            if (notes != null) 'notes': notes,
+            'services': services,
+          },
+        ),
+      ),
+    );
+    return res.obs;
+  }
+
+  // ─── Medical Certificates ────────────────────────────────────────────
+
+  static Future<RxList<MedicalCertificateItem>> getMedicalCertificates(int encounterId) async {
+    final res = MedicalCertificateListRes.fromJson(
+      await handleResponse(await buildHttpResponse("${APIEndPoints.medicalCertificates}/list?encounter_id=$encounterId")),
+    );
+    return res.data.obs;
+  }
+
+  static Future<Rx<MedicalCertificateCreateResp>> createMedicalCertificate({
+    required int patientId,
+    required int encounterId,
+    required int clinicId,
+    required String certificateType,
+    required String issueDate,
+    required String startDate,
+    required String endDate,
+    String? diagnosis,
+    required String reason,
+    String? recommendations,
+    String? notes,
+  }) async {
+    final res = MedicalCertificateCreateResp.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.medicalCertificates,
+          method: HttpMethodType.POST,
+          request: {
+            'patient_id': patientId,
+            'encounter_id': encounterId,
+            'clinic_id': clinicId,
+            'certificate_type': certificateType,
+            'issue_date': issueDate,
+            'start_date': startDate,
+            'end_date': endDate,
+            if (diagnosis != null) 'diagnosis': diagnosis,
+            'reason': reason,
+            if (recommendations != null) 'recommendations': recommendations,
+            if (notes != null) 'notes': notes,
+          },
+        ),
+      ),
+    );
+    return res.obs;
+  }
+
+  static Future<Rx<EncounterInvoiceResp>> downloadMedicalCertificate(int certificateId) async {
+    final res = EncounterInvoiceResp.fromJson(
+      await handleResponse(await buildHttpResponse("${APIEndPoints.medicalCertificates}/$certificateId/download")),
+    );
+    return res.obs;
+  }
+
+  // ─── Referrals (doctor/encounter-facing) ─────────────────────────────
+
+  static Future<RxList<EncounterReferralItem>> getEncounterReferrals(int encounterId) async {
+    final res = EncounterReferralListRes.fromJson(
+      await handleResponse(await buildHttpResponse("${APIEndPoints.encounterReferrals}?encounter_id=$encounterId")),
+    );
+    return res.data.obs;
+  }
+
+  static Future<Rx<EncounterReferralCreateResp>> createEncounterReferral({
+    required int patientId,
+    required int referredTo,
+    int? referredToClinicId,
+    required int encounterId,
+    required String reason,
+    String? notes,
+  }) async {
+    final res = EncounterReferralCreateResp.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.encounterReferrals,
+          method: HttpMethodType.POST,
+          request: {
+            'patient_id': patientId,
+            'referred_to': referredTo,
+            if (referredToClinicId != null && referredToClinicId > 0) 'referred_to_clinic_id': referredToClinicId,
+            'encounter_id': encounterId,
+            'reason': reason,
+            if (notes != null) 'notes': notes,
+          },
+        ),
+      ),
+    );
+    return res.obs;
   }
 }
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-const appColorPrimary = Color(0xFF5670CC);
-const appColorSecondary = Color(0xFFF67E7D);
-const lightPrimaryColor = Color(0xFFEBEDFF);
-const extraLightPrimaryColor = Color(0xFFF5F6FA);
-const lightSecondaryColor = Color(0xFFFEF1F1);
+const appColorPrimary = Color(0xFF007FFA);
+const appColorSecondary = Color(0xFFFF6B6B);
+const lightPrimaryColor = Color(0xFFE0F8F5);
+const extraLightPrimaryColor = Color(0xFFF0FDF9);
+const lightSecondaryColor = Color(0xFFFFE5E5);
 const lightSecondaryColor2 = Color(0xFFFBE6E6);
 
 const appBodyColor = Color(0xFF828A90);
@@ -16,16 +16,16 @@ const lightCanvasColor = Color(0xFF384052);
 const mediumCanvasColor = Color(0XFF303030);
 
 //Section BG / page BG
-const appLayoutBackground = Color(0xFFFAF8FF);
+const appLayoutBackground = Color(0xFFF4F7FB);
 const appSectionBackground = Color(0xFFFFFFFF);
-const appScreenBackground = Color(0xFFF5F6FA);
+const appScreenBackground = Color(0xFFF4F7FB);
 const appScreenGreyBackground = Color(0xFFF7F7F7);
 
 // Tertiary
 const bodyWhite = Color(0xFFA6A6A6);
 const bodyWhiteType = Color(0xFFFAFAFA);
 const appColorlightGray = Color(0xFFF5F5F5);
-const dividerColor = Color(0xFF828A90);
+const dividerColor = Color(0xFFE0E4E8);
 const whiteBorderColor = Color(0xFFF3F3FF);
 const borderColor = Color(0xFFD8D9D9);
 const borderColorDark = Color(0xFF23272F);
@@ -54,22 +54,22 @@ const darkGrayGeneral = Color(0xff6C757D);
 const darkGrayTextColor = Color(0xff3F414D);
 
 //Text Colors
-const primaryTextColor = Color(0xFF11104A);
-const secondaryTextColor = Color(0xFF7C7E93);
+const primaryTextColor = Color(0xFF1D1D1D);
+const secondaryTextColor = Color(0xFF808080);
 
 //status color
-const pendingStatusColor = Color(0xFFFD866E);
+const pendingStatusColor = Color(0xFFE9B631);
 const upcomingStatusColor = Color(0xFFFFCE70);
 const confirmedStatusColor = appColorPrimary;
-const completedStatusColor = Color(0xFF2CB562);
-const cancelStatusColor = Color(0xFFF04336);
-const defaultStatusColor = Color(0xFF11104A);
-const inprogressStatusColor = Color(0xFFE56F0F);
+const completedStatusColor = Color(0xFF00C853);
+const cancelStatusColor = Color(0xFFFF6B6B);
+const defaultStatusColor = Color(0xFF1D1D1D);
+const inprogressStatusColor = appColorPrimary;
 
 const switchActiveTrackColor = appColorPrimary;
 const switchActiveColor = Colors.white;
 const switchColor = Color(0xFF808080);
-const iconColor = Color(0xFF6E8192);
+const iconColor = Color(0xFF7C7D82);
 
 //region Bed Colors
 class BedColors {
@@ -121,7 +121,7 @@ class UIColors {
   static const borderDark = Color(0xFF374151);
 
   // Status Badge Colors
-  static const statusBadgeBackground = Color(0xFF5670CC);
+  static const statusBadgeBackground = Color(0xFF007FFA);
   static const statusBadgeText = Color(0xFFFFFFFF);
 }
 //endregion

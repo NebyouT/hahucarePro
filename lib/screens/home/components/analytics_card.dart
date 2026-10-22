@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/utils/app_common.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../components/cached_image_widget.dart';
@@ -10,6 +9,8 @@ class AnalyticsCard extends StatelessWidget {
   final String title;
   final String countText;
   final String icon;
+  final Color? cardColor;
+  final Color? iconBgColor;
 
   const AnalyticsCard({
     super.key,
@@ -17,47 +18,65 @@ class AnalyticsCard extends StatelessWidget {
     required this.title,
     required this.countText,
     required this.icon,
+    this.cardColor,
+    this.iconBgColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode.value;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: Get.width,
         padding: const EdgeInsets.all(16),
-        decoration: boxDecorationDefault(color: context.cardColor),
+        decoration: BoxDecoration(
+          color: cardColor ?? (isDark ? const Color(0xFF1A2634) : Colors.white),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isDark ? Colors.white.withValues(alpha: 0.06) : const Color(0xFFE8ECF0),
+            width: 1,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              textDirection: Directionality.of(context),
               children: [
                 Flexible(
-                  child: Marquee(
-                    child: Text(countText, textDirection: TextDirection.ltr, style: boldTextStyle(color: appColorSecondary, size: 24)),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      countText,
+                      style: boldTextStyle(
+                        color: appColorPrimary,
+                        size: 22,
+                      ),
+                    ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: boxDecorationDefault(color: isDarkMode.value ? Colors.grey.withValues(alpha: 0.05) : extraLightPrimaryColor, shape: BoxShape.circle),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: iconBgColor ?? lightPrimaryColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: CachedImageWidget(
                     url: icon,
-                    height: 18,
-                    width: 18,
+                    height: 16,
+                    width: 16,
                     color: appColorPrimary,
                   ),
                 ),
               ],
             ),
-            24.height,
+            16.height,
             Text(
               title,
-              style: primaryTextStyle(),
-              maxLines: 2,
-              textAlign: TextAlign.start,
+              style: secondaryTextStyle(size: 12, color: isDark ? const Color(0xFF9CA3AF) : secondaryTextColor),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

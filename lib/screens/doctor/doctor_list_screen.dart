@@ -29,7 +29,7 @@ class DoctorsListScreen extends StatelessWidget {
         scaffoldBackgroundColor: context.scaffoldBackgroundColor,
         appBarVerticalSize: Get.height * 0.12,
         isLoading: doctorsListCont.isLoading,
-        actions: loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)
+        actions: loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)
             ? [
                 IconButton(
                   onPressed: () async {
@@ -79,9 +79,9 @@ class DoctorsListScreen extends StatelessWidget {
                     if (doctorsListCont.doctors.isEmpty) {
                       return NoDataWidget(
                         title: locale.value.noDoctorsFound,
-                        retryText: !loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) ? null : locale.value.addNewDoctor,
+                        retryText: !loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist) ? null : locale.value.addNewDoctor,
                         imageWidget: const EmptyStateWidget(),
-                        onRetry: !loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)
+                        onRetry: !loginUserData.value.userRole.contains(EmployeeKeyConst.vendor) || loginUserData.value.userRole.contains(EmployeeKeyConst.receptionist)
                             ? null
                             : () async {
                                 Get.to(() => AddDoctorForm())?.then((result) {

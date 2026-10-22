@@ -47,7 +47,10 @@ class AssingDoctorCardWid extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(doctorData.fullName, style: boldTextStyle(size: 16)),
+                        Flexible(
+                          child: Text(doctorData.fullName, style: boldTextStyle(size: 16), overflow: TextOverflow.ellipsis, maxLines: 1),
+                        ),
+                        8.width,
                         const Spacer(),
                         Obx(
                           () => Checkbox(

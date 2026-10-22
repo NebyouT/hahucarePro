@@ -2636,4 +2636,19 @@ class LanguageHi extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'बिस्तर सफलतापूर्वक सहेजा गया';
+
+  @override
+  String get labTests => 'प्रयोगशाला परीक्षण';
+
+  @override
+  String get prescribedMedicines => 'निर्धारित दवाएँ';
+
+  @override
+  String get noLabOrdersFound => 'इस मुठभेड़ के लिए कोई प्रयोगशाला ऑर्डर नहीं मिला';
+
+  @override
+  String get noPrescriptionsFound => 'इस मुठभेड़ के लिए कोई नुस्खा नहीं मिला';
+
+  @override
+  String get selectLabTest => 'प्रयोगशाला परीक्षण चुनें';
 }

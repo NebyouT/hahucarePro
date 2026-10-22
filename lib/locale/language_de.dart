@@ -2636,4 +2636,19 @@ class LanguageDe extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'Bett erfolgreich gerettet';
+
+  @override
+  String get labTests => 'Labortests';
+
+  @override
+  String get prescribedMedicines => 'Verschriebene Medikamente';
+
+  @override
+  String get noLabOrdersFound => 'Keine Laboraufträge für diesen Termin gefunden';
+
+  @override
+  String get noPrescriptionsFound => 'Keine Rezepte für diesen Termin gefunden';
+
+  @override
+  String get selectLabTest => 'Labortest auswählen';
 }

@@ -255,6 +255,7 @@ class EmployeeKeyConst {
   static const doctor = 'doctor';
   static const receptionist = 'receptionist';
   static const pharma = 'pharma';
+  static const labTechnician = 'lab_technician';
 }
 //endregion
 
@@ -324,13 +325,15 @@ String postStatus({required String status}) {
 //Dynamic Login Roles
 LoginRoleData vendorLoginRole = LoginRoleData(id: 1, userType: EmployeeKeyConst.vendor, roleName: 'Clinic Admin', icon: Assets.iconsIcVendor, email: "vendor@kivicare.com", password: "12345678");
 LoginRoleData pharmaLoginRole = LoginRoleData(id: 4, userType: EmployeeKeyConst.pharma, roleName: 'Pharma', icon: Assets.iconsIcVendor, email: "pharma@kivicare.com", password: "12345678");
+LoginRoleData labLoginRole = LoginRoleData(id: 5, userType: EmployeeKeyConst.labTechnician, roleName: 'Lab Technician', icon: Assets.iconsIcServices, email: "lab@kivicare.com", password: "12345678");
 
 //region Login Roles
 RxList<LoginRoleData> loginRoles = [
   vendorLoginRole,
   LoginRoleData(id: 2, userType: EmployeeKeyConst.doctor, roleName: 'Doctor', icon: Assets.iconsIcDoctor, email: "doctor@kivicare.com", password: "12345678"),
   LoginRoleData(id: 3, userType: EmployeeKeyConst.receptionist, roleName: 'Receptionist', icon: Assets.iconsIcReceptionist, email: "receptionist@kivicare.com", password: "12345678"),
-  pharmaLoginRole
+  pharmaLoginRole,
+  labLoginRole
 ].obs;
 //endregion
 

@@ -2636,4 +2636,19 @@ class LanguageEs extends BaseLanguage {
 
   @override
   String get bedSavedSuccessfully => 'Cama salvada con éxito';
+
+  @override
+  String get labTests => 'Análisis de laboratorio';
+
+  @override
+  String get prescribedMedicines => 'Medicamentos recetados';
+
+  @override
+  String get noLabOrdersFound => 'No se encontraron órdenes de laboratorio para esta consulta';
+
+  @override
+  String get noPrescriptionsFound => 'No se encontraron recetas para esta consulta';
+
+  @override
+  String get selectLabTest => 'Seleccionar análisis';
 }
